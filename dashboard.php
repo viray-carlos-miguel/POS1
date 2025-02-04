@@ -24,7 +24,37 @@ session_start();
     <a href="cart.php">⚙️ Cart</a>
 </div>
 
+<div class="content">
+    <h2>📊 Sales Dashboard</h2>
 
+    <div class="chart-container">
+        <canvas id="salesChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="monthlySalesChart"></canvas>
+    </div>
+
+    <h3 style="text-align: center;">🛒 Featured Products</h3>
+    <div class="product-gallery">
+        <?php
+        $products = [
+            ["name" => "Laptop", "image" => "uploads/laptop.jpg"],
+            ["name" => "Smartphone", "image" => "uploads/smartphone.jpg"],
+            ["name" => "Headphones", "image" => "uploads/headphones.jpg"],
+            ["name" => "Camera", "image" => "uploads/camera.jpg"],
+            ["name" => "Smartwatch", "image" => "uploads/smartwatch.jpg"]
+        ];
+
+        foreach ($products as $product) {
+            echo '<div class="product-item">
+                    <img src="'.$product['image'].'" alt="'.$product['name'].'">
+                    <div class="product-name">'.$product['name'].'</div>
+                  </div>';
+        }
+        ?>
+    </div>
+</div>
 
 <script>
 const dailySalesData = {
