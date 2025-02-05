@@ -2,8 +2,8 @@
 session_start();
 include('db_connect.php'); // Database connection
 
-// Initialize error messages
-$usernameErr = $emailErr = $passwordErr = $confirmPasswordErr = "";
+// Initialize error and success messages
+$usernameErr = $emailErr = $passwordErr = $confirmPasswordErr = $successMsg = "";
 $username = $email = $password = $confirmPassword = "";
 
 // Create connection
@@ -65,9 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sss", $username, $email, $hashedPassword);
 
             if ($stmt->execute()) {
-                echo "<p>Signup successful! You can now <a href='login.php'>login</a>.</p>";
+                $successMsg = "Signup successful! You can now <a href='login.php'>login</a>.";
             } else {
-                echo "Error: " . $stmt->error;
+                $emailErr = "Error: " . $stmt->error;
             }
         }
         $stmt->close();
@@ -163,6 +163,12 @@ $conn->close();
             margin-bottom: 15px;
         }
 
+        .success {
+            color: green;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
         /* Link styling */
         p {
             text-align: center;
@@ -177,7 +183,6 @@ $conn->close();
         a:hover {
             text-decoration: underline;
         }
-
     </style>
 </head>
 <body>
@@ -186,6 +191,11 @@ $conn->close();
     <h2>Sign Up</h2>
 
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+
+        <!-- Success Message -->
+        <?php if (!empty($successMsg)): ?>
+            <div class="success"><?php echo $successMsg; ?></div>
+        <?php endif; ?>
 
         <!-- Username Field -->
         <label for="username">Username</label>
