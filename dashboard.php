@@ -22,6 +22,7 @@ session_start();
     <a href="store.php">👥 Store</a>
     <a href="orders.php">📊 Orders</a>
     <a href="cart.php">⚙️ Cart</a>
+    <a href="logout.php">Logout</a>
 </div>
 
 <div class="content">

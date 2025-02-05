@@ -1,11 +1,13 @@
 <?php
+session_start(); // Start the session
+
 // Database connection settings
 $servername = "localhost";
-$username = "root";         // MySQL username (default "root")
-$password = "";             // MySQL password (default empty string)
-$dbname = "db_pos";         // The database name
+$username = "root";
+$password = "";
+$dbname = "db_pos";
 
-// Initialize error message
+// Initialize error messages
 $emailErr = $passwordErr = "";
 
 // Create connection
@@ -47,9 +49,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Verify the password
             if (password_verify($password, $storedPassword)) {
-                echo "<p>Login successful! Welcome back, $storedUsername.</p>";
-                // Here, you can set a session variable to keep the user logged in
-                // Example: $_SESSION['user_id'] = $userId;
+                // Start session and store user details
+                $_SESSION['user_id'] = $userId;
+                $_SESSION['username'] = $storedUsername;
+
+                // Redirect to dashboard
+                header("Location: dashboard.php");
+                exit();
             } else {
                 $passwordErr = "Incorrect password";
             }
@@ -63,14 +69,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Function to clean input data
 function cleanInput($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
+    return htmlspecialchars(stripslashes(trim($data)));
 }
 
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -184,7 +188,8 @@ $conn->close();
         <input type="password" id="password" name="password" placeholder="Enter your password">
         <div class="error"><?php echo $passwordErr; ?></div>
 
-        <input type="submit" value="Login" onclick="location.href='dashboard.php';">
+        <input type="submit" value="Login">
+
     </form>
 
     <p>Don't have an account? <a href="signup.php">Sign up here</a>.</p>
